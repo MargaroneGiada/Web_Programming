@@ -1,0 +1,114 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Imposta le dimensioni fisse del contenitore */
+/* .event {
+  width: 400px;
+  height: 400px; 
+  overflow: hidden; 
+  position: relative; 
+} */
+
+/* Stile per l'immagine all'interno del contenitore */
+/* .event img {
+  width: 100%; 
+  height: 100%;
+  object-fit: cover; 
+  object-position: center; 
+} */
+
+.eventDetail {
+  width: 500px; /* Larghezza fissa desiderata */
+  height: 400px; /* Altezza fissa desiderata */
+  overflow: hidden; /* Nasconde le parti che strabordano */
+  position: relative; /* Per il posizionamento relativo dell'immagine */
+}
+
+/* Stile per l'immagine all'interno del contenitore */
+.eventDetail img {
+  width: 100%; /* Larghezza al 100% del contenitore */
+  height: 100%; /* Altezza al 100% del contenitore */
+  object-fit: cover; /* Ritaglia l'immagine per riempire il contenitore */
+  object-position: center; /* Centra l'immagine all'interno del contenitore */
+}
+
+.event-details{
+  width: 500px; /* Larghezza fissa desiderata */
+  height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+#map {
+  height: 100vh; /* Imposta l'altezza al 100% della finestra */
+  width: 100%;   /* Imposta la larghezza al 100% dell'elemento contenitore */
+}
+
+.navbar-brand img {
+  z-index: 10;
+}
+
+.fullpage{
+  background-color: #a9c0a9;
+  min-height: 100vh;
+}
+
+textarea.inserisciCommento {
+  min-height: 100px !important;
+  max-height: 100px !important;
+  resize: none;
+}
+
+.comment{
+  background-color:#cbe2cb48;
+}
+
+.comment a:hover{
+  cursor: grab;
+}
+
+/* Aggiungi nel tuo file App.css o un file CSS dedicato */
+
+.dropdown-menu-mine {
+  display: block; /* Assicurati che il dropdown sia visibile */
+  position: absolute; /* Posiziona il menu sotto l'input */
+  top: 100%; /* Posiziona il menu sotto l'input */
+  left: 0;
+  z-index: 1000; /* Assicurati che il menu sia sopra altri elementi */
+}
+
+.dropdown-menu-mine .dropdown-item-mine:hover{
+  background-color: lightgray;
+}
+
+.dropdown-menu-mine .dropdown-item-mine:active{
+  background-color: lightgray;
+
+}
+
+.position-relative {
+  position: relative; /* Posizionamento relativo per contenere il dropdown-menu */
+}
+
+.position-absolute {
+  position: absolute; /* Posizionamento assoluto per il menu dropdown */
+}
+
+.mt-2 {
+  margin-top: 0.5rem; /* Distanza tra la barra di ricerca e il menu a tendina */
+}
+
+.w-100 {
+  width: 100%; /* Assicurati che il dropdown si estenda alla larghezza del campo di ricerca */
+}
