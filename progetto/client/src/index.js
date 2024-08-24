@@ -14,16 +14,14 @@ import Chat from './content/Chat';
 import Category from './content/Category';
 import { LoadScript } from '@react-google-maps/api';
 
-const mapId = '6e674a5f15d5b512';
-const apiKey = "AIzaSyDfHYlA0EODV9YfoDGc5pAO93XLqhu_0Fs";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   
   <React.StrictMode>
     <LoadScript
-      googleMapsApiKey={apiKey}
-      mapIds={[mapId]}
+      googleMapsApiKey={process.env.API_KEY}
+      mapIds={[process.env.MAP_ID]}
     >
     <Router>
       <Routes>
