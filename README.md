@@ -33,16 +33,19 @@ Crea un file .env nella cartella ./progetto/server/ con i seguenti parametri:
 Crea un file .env nella cartella ./progetto/client/ con i seguenti parametri:
 
 `REACT_APP_GOOGLE_MAPS_API_KEY=la_tua_chiave_google_maps`
+
 `REACT_APP_MAP_ID=id_della_mappa_google`
 
 3. Installazione delle Dipendenze
 Naviga nelle cartelle del client e del server e installa le dipendenze necessarie con i seguenti comandi:
 
 `cd ./progetto/client`
+
 `npm install`
 
 Installazione delle Dipendenze del Server
 `cd ../server`
+
 `npm install`
 
 ## Avvio del Progetto
