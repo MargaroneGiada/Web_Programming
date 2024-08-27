@@ -5,7 +5,7 @@ const libraries = ['places'];
 
 function LocationSearchInput({ onSelect }) {
     const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey: process.env.API_KEY, 
+        googleMapsApiKey: process.env.REACT_APP_KEY, 
         libraries,
     });
 

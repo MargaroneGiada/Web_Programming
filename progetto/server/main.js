@@ -18,11 +18,12 @@ const io = socketIo(server, {
 app.use(cors({
     methods: ["GET", "POST"]
 }));
+
 app.use(express.json());
 
 
 // Connessione a MongoDB
-const mongoURI = 'mongodb://localhost:27017/eventi'; 
+const mongoURI = process.env.MONGO_URI; 
 mongoose.connect(mongoURI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -46,10 +47,12 @@ app.get('*', (req, res) => {
 });
 
 io.on('connection', (socketClient) => {
-    console.log('Un utente si è connesso');
+    io.on('connection', (socketClient) => {
+        console.log(`Un utente si è connesso: ${socketClient.id}`);
+    });
 
     socketClient.on("sendComment", (comment) => {
-        console.log("nuovo commento arrivato", comment);
+        console.log("nuovo commento arrivato", comment._id);
         socketClient.emit("newComment", comment);
         socketClient.broadcast.emit("newComment", comment);
     });

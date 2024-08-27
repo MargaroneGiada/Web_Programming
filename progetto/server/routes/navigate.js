@@ -23,4 +23,12 @@ router.get('/organizzatore/crea', authMiddleware, organizerMiddleware, (req, res
     res.send('Create');
 });
 
+router.get('/profilo', authMiddleware, organizerMiddleware, (req, res) => {
+    res.send('Profilo');
+});
+
+router.get('/profilo', authMiddleware, organizerMiddleware, (req, res) => {
+    res.send('Profilo');
+});
+
 module.exports = router;

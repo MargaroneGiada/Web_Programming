@@ -10,18 +10,16 @@ import Organizer from './content/Organizer';
 import CreateEvent from './content/CreateEvent';
 import EventDetails from './content/EventDetails';
 import Profile from './content/Profile';
-import Chat from './content/Chat';
 import Category from './content/Category';
-import { LoadScript } from '@react-google-maps/api';
-
+import ProfileVisited from './content/ProfileVisited';
+import { LoadScript} from '@react-google-maps/api';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  
-  <React.StrictMode>
+
     <LoadScript
-      googleMapsApiKey={process.env.API_KEY}
-      mapIds={[process.env.MAP_ID]}
+      googleMapsApiKey={process.env.REACT_APP_KEY}
+      mapIds={[process.env.REACT_APP_MAP_ID]}
     >
     <Router>
       <Routes>
@@ -34,10 +32,10 @@ root.render(
         <Route path="/organizzatore/crea" element={<CreateEvent />} />
         <Route path="/evento" element={<EventDetails />} />
         <Route path="/profilo" element={<Profile />} />
-        <Route path="/chat" element={<Chat />} />
+        <Route path="/user" element={<ProfileVisited />} />
         <Route path="/categorie" element={<Category />} />
       </Routes>
     </Router>
     </LoadScript>
-  </React.StrictMode>
+
 );

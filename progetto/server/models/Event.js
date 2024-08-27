@@ -25,7 +25,7 @@ eventSchema.pre('findOneAndDelete', async function(next) {
     }
 });
 
-eventSchema.index({ name: 'text', description: 'text' });
+eventSchema.index({ name: 'text', description: 'text'});
 
 const Event = mongoose.model('Event', eventSchema);
 

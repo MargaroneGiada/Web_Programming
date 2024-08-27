@@ -9,7 +9,6 @@ function Organizer() {
 
   const [user, setUser] = useState(null);
   const [events, setEvents] = useState([]);
-  const serverBaseUrl = 'http://localhost:5000'; 
 
   const navigate = useNavigate();
 
@@ -77,7 +76,7 @@ function Organizer() {
                     <figure className="card-img-top mb-0 overflow-hidden bsb-overlay-hover">
                       <a className=' overflow-hidden'>
                         {event.images.length > 0 && (
-                          <img src={`${serverBaseUrl}${event.images[0]}`} alt={`event`} className="img-thumbnail" />
+                          <img src={`${event.images[0]}`} alt={`event`} className="img-thumbnail" />
                         ) 
                         }{event.images.length <= 0 && (
                           <img src='/assets/img/logoNuovo.png' alt={`event`} className="img-thumbnail" />

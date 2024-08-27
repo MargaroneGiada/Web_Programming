@@ -9,7 +9,6 @@ const Category = () => {
     const [user, setUser] = useState(null);
     const [events, setEvents] = useState([]);
     const [categoria, setCategoria] = useState('');
-    const serverBaseUrl = 'http://localhost:5000';
     const navigate = useNavigate();
 
     const fetchEventi = async () => {
@@ -74,7 +73,7 @@ const Category = () => {
                                             <figure className="card-img-top mb-0 overflow-hidden bsb-overlay-hover">
                                                 <a className='overflow-hidden'>
                                                     {event.images.length > 0 ? (
-                                                        <img src={`${serverBaseUrl}${event.images[0]}`} alt={`event`} className="img-thumbnail" />
+                                                        <img src={`${event.images[0]}`} alt={`event`} className="img-thumbnail" />
                                                     ) : (
                                                         <img src='/assets/img/logoNuovo.png' alt={`event`} className="img-thumbnail" />
                                                     )}

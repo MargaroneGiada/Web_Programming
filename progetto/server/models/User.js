@@ -11,7 +11,7 @@ userSchema.pre('findOneAndDelete', async function(next) {
     try {
         const userId = this.getQuery()._id;
         await mongoose.model('Partecipa').deleteMany({ user: userId });
-        await mongoose.model('Comments').deleteMany({ user: userId });
+        await mongoose.model('Comment').deleteMany({ user: userId });
         next();
     } catch (error) {
         next(error);

@@ -6,18 +6,6 @@ const Event = require('../models/Event');
 const Comment = require('../models/Comments');
 const Partecipa = require('../models/Partecipa');
 
-
-const http = require('http');
-const socketIo = require('socket.io');
-// Crea l'app Express
-const app = express();
-const server = http.createServer(app);
-const io = socketIo(server, {
-    cors: {
-        methods: ["GET", "POST"]
-    }
-});
-
 router.post('/', async (req, res) => {
     const { eventId, userId } = req.body.dati;
 
@@ -34,9 +22,8 @@ router.post('/', async (req, res) => {
         });
 
         await newPartecipation.save();
-        console.log("Nuova Partecipazione", newPartecipation);
+        console.log("Utente", userId, "partecipa all'evento", eventId);
         res.status(200).send('Partecipazione confermata');
-        console.log("Salvato");
     } catch (error) {
         console.error('Errore nel server:', error);
         res.status(500).send('Errore del server');
@@ -48,9 +35,9 @@ router.post('/stop', async (req, res) => {
     const { eventId, userId } = req.body.dati;
 
     try {
-        // Verifica se l'utente è già registrato per l'evento
         Partecipa.findOneAndDelete({ event: eventId, user: userId })
         .then(result => {
+            console.log("Utente", userId, "non partecipa più all'evento", eventId);
             res.status(200).json({
             message: 'Partecipation Deleted',
             result
@@ -80,10 +67,8 @@ router.get('/check', async (req, res) => {
         const existingRecord = await Partecipa.findOne({ event: eventId, user: userId });
 
         if (existingRecord) {
-            console.log("------------Utente partecipa");
             return res.status(200).json({ message: 'L\'utente partecipa a questo evento', partecipa: true });
         } else {
-            console.log("------------Utente NON partecipa");
             return res.status(200).json({ message: 'L\'utente non partecipa a questo evento', partecipa: false });
         }
 
@@ -92,6 +77,23 @@ router.get('/check', async (req, res) => {
         res.status(500).send('Errore del server');
     }
 });
+
+router.get('/count', async (req, res) => {
+    
+    const eventId = req.query.eventId;
+
+    try {
+        const total = await Partecipa.countDocuments({ event: eventId});
+
+       
+        return res.status(200).json({ message: 'L\'utente partecipa a questo evento',  total});
+       
+    } catch (error) {
+        console.error('Errore nel server:', error);
+        res.status(500).send('Errore del server');
+    }
+});
+
 
 
 module.exports = router;

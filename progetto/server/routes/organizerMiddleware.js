@@ -3,8 +3,6 @@ const User = require('../models/User')
 async function organizerMiddleware(req, res, next) {
 
     const user =  await User.findById(req.user.id);
-    console.log(user);
-
     if (!user) {
         return res.status(401).json({ message: 'Access denied. No user authenticated.' });
     }

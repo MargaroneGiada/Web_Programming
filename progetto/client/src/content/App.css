@@ -713,6 +713,7 @@ progress {
   height: auto;
 }
 
+
 .figure {
   display: inline-block;
 }
@@ -4423,6 +4424,8 @@ textarea.form-control-lg {
 .card-img-top,
 .card-img-bottom {
   width: 100%;
+  min-height: 200px;
+  max-height: 200px;
 }
 
 .card-img,

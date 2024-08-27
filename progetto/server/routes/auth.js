@@ -6,16 +6,13 @@ const authMiddleware = require('./authMiddleware');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const organizerMiddleware = require('./organizerMiddleware');
-
-
-// Verifica se il modello User è già stato definito
 const User = require('../models/User');
 
-  
+
 async function checkUser(email, username) {
     try {
-        const user = await User.findOne({ username: username});
-        const em = await User.findOne({ email: email});
+        const user = await User.findOne({ username: username });
+        const em = await User.findOne({ email: email });
 
         if (user || em) {
             console.log('Utente o email già in uso');
@@ -30,33 +27,7 @@ async function checkUser(email, username) {
     }
 }
 
-async function logUser(email, password) {
-    try {
-        // Trova l'utente per email
-        const user = await User.findOne({ email: email });
 
-        if (!user) {
-            console.log('Utente o password errati.');
-            return null;
-        }
-
-        // Confronta la password
-        const isMatch = await bcrypt.compare(password, user.hashedPassword);
-
-        if (isMatch) {
-            console.log('Utente e password corretti');
-            return user;
-        } else {
-            console.log('Utente o password errati.');
-            return null;
-        }
-    } catch (err) {
-        console.error('Errore:', err);
-        return null;
-    }
-}
-
-// Route per la registrazione
 router.post('/register', async (req, res) => {
     const { email, username, password, organizer } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -66,6 +37,7 @@ router.post('/register', async (req, res) => {
         if (!userExists) {
             const newUser = new User({ email, username, hashedPassword, organizer });
             await newUser.save();
+            console.log("Nuovo utente registrato");
             res.status(201).json({ message: 'User registered successfully', user: newUser });
         } else {
             res.status(400).json({ message: 'Username o email già in uso!' });
@@ -85,20 +57,17 @@ router.post('/login', async (req, res) => {
             return res.status(400).json({ message: 'Invalid email or password!' });
         }
 
-        // Confronta la password inserita con quella memorizzata nel database
         const isMatch = await bcrypt.compare(passwordIn, user.hashedPassword);
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid email or password!' });
         }
-
-        // Se l'utente è autenticato, genera un token JWT con il loro ID e altre informazioni nel payload
         const token = jwt.sign(
-            { id: user._id, username: user.username }, 
-            process.env.JWT_SECRET, 
+            { id: user._id, username: user.username },
+            process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
+        console.log("Utente", user._id, "loggato");
 
-        // Restituisci il token all'utente
         res.status(200).json({ message: 'User logged in successfully', token });
     } catch (error) {
         console.error('Error logging in user:', error);
@@ -112,13 +81,23 @@ router.get('/verify', authMiddleware, async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-
         res.status(200).json({ message: 'Token is valid', user: { _id: user._id, email: user.email, username: user.username, organizer: user.organizer } });
     } catch (error) {
         res.status(500).json({ message: 'Error verifying token', error });
     }
 });
 
+router.get('/verifyOthers', authMiddleware, async (req, res) => {
+    try {
+        const user = await User.findById(req.query.userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        res.status(200).json({ message: 'Token is valid', user: { _id: user._id, email: user.email, username: user.username, organizer: user.organizer } });
+    } catch (error) {
+        res.status(500).json({ message: 'Error verifying token', error });
+    }
+});
 
 router.get('/verifyOrganizer', authMiddleware, organizerMiddleware, async (req, res) => {
     try {
@@ -134,6 +113,7 @@ router.delete('/delete', authMiddleware, async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
+        console.log("Utente", user._id, "eliminato");
         res.status(200).json({ message: 'User and participations deleted successfully', user });
     } catch (error) {
         console.error('Error deleting user:', error);

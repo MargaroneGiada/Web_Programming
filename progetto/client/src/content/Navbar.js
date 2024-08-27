@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate, NavLink } from 'react-router-dom';
 import './App.css';
+import getSocket from './Socket';
+
 
 function Navbar() {
     const [user, setUser] = useState(null);
@@ -10,6 +12,8 @@ function Navbar() {
     const [dropdownVisible, setDropdownVisible] = useState(false);
     const searchRef = useRef(null);
     const navigate = useNavigate();
+    const socket = getSocket();
+
 
     useEffect(() => {
         const token = sessionStorage.getItem('token');
@@ -29,24 +33,24 @@ function Navbar() {
                     navigate('/login');
                 });
         }
-    }, [navigate]);
-
-    useEffect(() => {
-        // Close dropdown if clicked outside
+    
         const handleClickOutside = (event) => {
             if (searchRef.current && !searchRef.current.contains(event.target)) {
                 setDropdownVisible(false);
             }
         };
+
         document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
     const logout = () => {
         sessionStorage.removeItem('token');
+        if (socket) {
+            socket.disconnect(); 
+        }
         navigate('/login');
     };
-
+    
     const handleSearch = (event) => {
         event.preventDefault();
         axios.get('/api/events/search', { params: { search: searchTerm } })
@@ -107,11 +111,6 @@ function Navbar() {
                             <li className="nav-item">
                                 <NavLink to="/mappa" className="nav-link text-white">
                                     Mappa
-                                </NavLink>
-                            </li>
-                            <li className="nav-item">
-                                <NavLink to="/chat" className="nav-link text-white">
-                                    Chat
                                 </NavLink>
                             </li>
                             <li className="nav-item">

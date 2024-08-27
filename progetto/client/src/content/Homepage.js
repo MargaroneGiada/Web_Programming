@@ -9,7 +9,6 @@ function Homepage() {
 
     const [user, setUser] = useState(null);
     const [events, setEvents] = useState([]);
-    const serverBaseUrl = 'http://localhost:5000'; 
 
 
     const navigate = useNavigate();
@@ -26,7 +25,7 @@ function Homepage() {
 
                     } else {
                         setUser(response.data.user);
-                        fetchFutureEvents();
+                        fetchFutureEvents(response.data.user);
                     }
                 })
                 .catch((error) => {
@@ -36,8 +35,8 @@ function Homepage() {
         }
     }, [navigate]);
 
-    const fetchFutureEvents = async () => {
-        await axios.get('/api/events/futureEvents', { headers: { authorization: sessionStorage.getItem('token') } })
+    const fetchFutureEvents = async (userId) => {
+        await axios.get('/api/events/futureEvents', { headers: { authorization: sessionStorage.getItem('token') }, params: { userId: userId } })
             .then(response => {
                 setEvents(response.data || []);
             })
@@ -84,7 +83,7 @@ function Homepage() {
                                             <figure className="card-img-top mb-0 overflow-hidden bsb-overlay-hover">
                                                 <a className='overflow-hidden'>
                                                     {event.images.length > 0 && (
-                                                        <img src={`${serverBaseUrl}${event.images[0]}`} alt={`event`} className="img-thumbnail" />
+                                                        <img src={`${event.images[0]}`} alt={`event`} className="img-thumbnail" />
                                                     )
                                                     }{event.images.length <= 0 && (
                                                         <img src='/assets/img/logoNuovo.png' alt={`event`} className="img-thumbnail" />

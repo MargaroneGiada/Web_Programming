@@ -12,11 +12,17 @@ const CarouselComponent = ({ images }) => {
 
     return (
         <Slider {...settings}>
-            {images.map((image, index) => (
-                <div key={index}>
-                    <img src={image} className="d-block w-100" alt={`Slide ${index}`} />
+            {images.length > 0 ? (
+                images.map((image, index) => (
+                    <div key={index} className='eventDetail'>
+                        <img src={image} className="d-block w-100 " alt={`Slide ${index}`} />
+                    </div>
+                ))
+            ) : (
+                <div>
+                    <img src="assets/img/logoNuovo.png" className="defaultImage ms-lg-5" alt="Default Slide" />
                 </div>
-            ))}
+            )}
         </Slider>
     );
 };

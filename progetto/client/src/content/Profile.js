@@ -8,7 +8,6 @@ const Profile = () => {
 
     const [user, setUser] = useState(null);
     const [events, setEvents] = useState([]);
-    const serverBaseUrl = 'http://localhost:5000'; 
 
 
     const navigate = useNavigate();
@@ -25,7 +24,7 @@ const Profile = () => {
 
                     } else {
                         setUser(response.data.user);
-                        fetchFutureEvents();
+                        fetchPastEvents(response.data.user);
                     }
                 })
                 .catch((error) => {
@@ -35,8 +34,8 @@ const Profile = () => {
         }
     }, [navigate]);
 
-    const fetchFutureEvents = async () => {
-        await axios.get('/api/events/pastEvents', { headers: { authorization: sessionStorage.getItem('token') } })
+    const fetchPastEvents = async (userId) => {
+        await axios.get('/api/events/pastEvents', { headers: { authorization: sessionStorage.getItem('token') }, params: { userId: userId } })
             .then(response => {
                 setEvents(response.data || []);
             })
@@ -63,7 +62,8 @@ const Profile = () => {
 
             if (response.status === 200) {
                 alert("User eliminato");
-                navigate('/registrazione');
+                sessionStorage.removeItem('token');
+                navigate('/register');
             } else {
                 console.error('Errore durante l\'eliminazione:', response);
                 alert('Impossibile confermare l\'eliminaziione.');
@@ -79,21 +79,21 @@ const Profile = () => {
     }
 
     return (
-        <div className='fullpage'>
+        <div className='Profilo fullpage'>
             <Navbar />
             <div className="row ">
-                <div className='col-3 '>
-                    <div className='bg-white futureEvents p-4 ps-5 p-lg-5 m-5 bg-white rounded-3 text-center'>
-                    <h1 className='mb-5 text-primary fw-bolder'>{user.username}</h1>
-                    <p className='mb-3 text-primary '> Email: {user.email}</p>
-                    <p className='mb-3 text-primary '> Organizzatore: {user.organizer ? ("Si") : ("No")}</p>
-                    <p className='mb-3 text-primary '> Numero eventi: {events.length}</p>
+                <div className='col-lg-3 col-sm-4'>
+                    <div className=' m-5 m-sm-3 futureEvents p-4 p-lg-5 bg-white rounded-3 text-center'>
+                    <h1 className='mb-lg-5 m-3 text-primary fw-bolder'>{user.username}</h1>
+                    <p className='mb-lg-3 m-2 text-primary '> Email: {user.email}</p>
+                    <p className='mb-lg-3 m-2 text-primary '> Organizzatore: {user.organizer ? ("Si") : ("No")}</p>
+                    <p className='mb-lg-3 m-2 text-primary '> Numero eventi: {events.length}</p>
 
                     <button className='btn btn-danger mt-5' onClick={handleDeleteUser}>Elimina account</button>
                     </div>
                     </div>
-                <div className='col-9 '>
-                <div className=' m-5 futureEvents p-4 p-lg-5 bg-white rounded-3 text-center'>
+                <div className='col-lg-9 col-sm-8'>
+                <div className=' m-5 m-sm-3 pastEvents p-4 p-lg-5 bg-white rounded-3 text-center'>
                     <h1 className='text-primary fw-bolder mb-2'>Storico eventi</h1>
                     <div className='row gx-lg-5 '>
                     {events.length > 0 ? (
@@ -104,7 +104,7 @@ const Profile = () => {
                                     <figure className="card-img-top mb-0 overflow-hidden bsb-overlay-hover">
                                         <a className='overflow-hidden'>
                                             {event.images.length > 0 && (
-                                                <img src={`${serverBaseUrl}${event.images[0]}`} alt={`event`} className="img-thumbnail" />
+                                                <img src={`${event.images[0]}`} alt={`event`} className="img-thumbnail" />
                                             )
                                             }{event.images.length <= 0 && (
                                                 <img src='/assets/img/logoNuovo.png' alt={`event`} className="img-thumbnail" />
