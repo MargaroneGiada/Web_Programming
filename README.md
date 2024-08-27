@@ -23,8 +23,8 @@ Prima di poter avviare il progetto, bisogna assicurarsi di avere:
 1. Configurazione del Backend
 Crea un file .env nella cartella ./progetto/server/ con i seguenti parametri:
 
-`PORT=porta_di_ascolto_del_server (es. 5000)`
-`JWT_SECRET=tuo_segreto_per_jwt`
+`PORT=porta_di_ascolto_del_server (es. 5000)` \n
+`JWT_SECRET=tuo_segreto_per_jwt` \n
 `MONGODB_URI=indirizzo_della_tua_istanza_mongodb`
 
 2. Configurazione del Frontend
