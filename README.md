@@ -1,55 +1,24 @@
-Progetto di Giada Rossana Margarone, matricola 1000015029.
-Corso: WEB PROGRAMMING, DESIGN & USABILITY
+# Progetto di Giada Rossana Margarone
+#### Matricola: 1000015029
+#### Corso: WEB PROGRAMMING, DESIGN & USABILITY
 
-Per creare questo applicativo ho utilizzato i seguenti strumenti:
--React
--Bootstrap
--MongoDB
--Google API
-
-Per poter utilizzare il progetto, bisogna avere un'istanza di MongoDB attiva e sostituirne l'indirizzo in ./progetto/server/main.js.
-Bisogna essere in possesso (o richiedere) delle chiavi API di Google da inserire in un file (nuovo) ./progetto/client/.env come:
-`REACT_APP_KEY=chiave
-REACT_APP_MAP_ID=id`
-
-Bisogna inolytre creare un file (nuovo) ./progetto/server/.env con i seguenti parametri:
-`PORT=porta
-JWT_SECRET=segreto
-MONGO_URI=indirizzo_mongo`
-
-Inoltre, bisogna aver installato sul proprio dispositivo npm.
-
-Date queste premesse, i seguenti passaggi serviranno ad avviare client e server.
-`cd ./progetto/client`
-`npm install`
-`npm start`
-
-`cd ../server`
-`npm install`
-`npm start`
-
-
-#Progetto di Giada Rossana Margarone
-####Matricola: 1000015029
-####Corso: WEB PROGRAMMING, DESIGN & USABILITY
-
-##Descrizione del Progetto
+## Descrizione del Progetto
 Questo applicativo web è stato sviluppato come parte del corso di Web Programming, Design & Usability. L'applicativo permette la gestione di eventi e utenti, utilizzando una combinazione di tecnologie moderne per il frontend e il backend.
 
-##Tecnologie Utilizzate
+## Tecnologie Utilizzate
 - React: Framework JavaScript;
 - Bootstrap: Libreria CSS per un design responsive;
 - MongoDB: Database NoSQL per la gestione dei dati;
 - Google API: Utilizzato per l'integrazione con Google Maps e altre funzionalità.
 
-##Prerequisiti
+## Prerequisiti
 Prima di poter avviare il progetto, bisogna assicurarsi di avere:
 
 1. MongoDB: Un'istanza di MongoDB attiva e configurata.
 2. Google API Keys: Chiavi API di Google per utilizzare Google Maps e altre funzionalità.
 3. Node.js e npm: Assicurati di avere Node.js e npm installati.
 
-##Configurazione
+## Configurazione
 
 1. Configurazione del Backend
 Crea un file .env nella cartella ./progetto/server/ con i seguenti parametri:
@@ -74,7 +43,7 @@ Installazione delle Dipendenze del Server
 `cd ../server
 npm install`
 
-Avvio del Progetto
+## Avvio del Progetto
 
 1. Avvio del Backend
 Dalla cartella ./progetto/server, avvia il server con il comando:
