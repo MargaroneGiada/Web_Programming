@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ 
+const upload = multer({
     storage: storage,
     fileFilter: (req, file, cb) => {
         if (file.mimetype === 'image/jpeg') {
@@ -35,7 +35,7 @@ const upload = multer({
 router.get('/eventsOf', authMiddleware, async (req, res) => {
     try {
         const user = await User.findById(req.user.id);
-        const events = await Event.find({ organizer: user._id }); 
+        const events = await Event.find({ organizer: user._id });
         res.status(200).json({ events });
     } catch (error) {
         res.status(500).json({ message: 'Error retrieving events', error });
@@ -44,8 +44,8 @@ router.get('/eventsOf', authMiddleware, async (req, res) => {
 
 router.get('/commentsOf', async (req, res) => {
     try {
-        const comments = await Comment.find({ event: req.headers.event }).populate('user', 'username'); 
-        res.status(200).json( {comments} );
+        const comments = await Comment.find({ event: req.headers.event }).populate('user', 'username');
+        res.status(200).json({ comments });
     } catch (error) {
         res.status(500).json({ message: 'Error retrieving events', error });
     }
@@ -64,11 +64,11 @@ router.get('/futureEvents', authMiddleware, async (req, res) => {
 
 router.get('/pastEvents', authMiddleware, async (req, res) => {
     try {
-        const now = new Date(); 
+        const now = new Date();
         const participations = await Partecipa.find({ user: req.query.userId }).populate('event');
         // Filtra gli eventi per data passata
         const pastEvents = participations.map(p => p.event).filter(event => event && new Date(event.date) <= now);
-        
+
         res.status(200).json(pastEvents);
     } catch (error) {
         res.status(500).json({ message: 'Error retrieving events', error });
@@ -120,16 +120,16 @@ router.delete('/delete', authMiddleware, organizerMiddleware, async (req, res) =
 router.post('/addComment', async (req, res) => {
 
     try {
-        const { text, user, event, data} = req.body;
+        const { text, user, event, data } = req.body;
 
         const newComment = new Comment({
             text,
             user,
             event,
             data
-         });
+        });
         const savedComment = (await newComment.save());
-        const populatedComment = await Comment.findById(savedComment._id).populate('user');     
+        const populatedComment = await Comment.findById(savedComment._id).populate('user');
         res.status(201).json(populatedComment);
     } catch (error) {
         console.error('Error creating comment:', error);
@@ -137,28 +137,44 @@ router.post('/addComment', async (req, res) => {
     }
 });
 
-router.get('/category', authMiddleware, async (req, res) => {
-    
+router.get('/category', async (req, res) => {
     try {
-        const category = req.query.category; 
+        const { category } = req.query;
+        const page = parseInt(req.query.page, 10) || 1;
+        const limit = parseInt(req.query.limit, 10) || 9;
+
         const now = new Date();
-        const filter = { date: { $gte: now } };
-        if (category && category !== 'tutto') {
-            filter.category = category;
-        }
-        const events = await Event.find(filter);
-        res.json(events);
+
+        const query = {
+            ...category && category !== 'tutto' ? { category } : {},
+            date: { $gt: now }
+        };
+
+        const events = await Event.find(query)
+            .skip((page - 1) * limit)
+            .limit(limit)
+            .sort({ date: 1 });
+
+        const totalEvents = await Event.countDocuments(query);
+        const totalPages = Math.ceil(totalEvents / limit);
+
+        console.log(events);
+
+        res.json({
+            events: events,
+            totalPages,
+            currentPage: page
+        });
     } catch (error) {
-        console.error('Errore nella richiesta degli eventi:', error);
-        res.status(500).json({ message: 'Errore nel recupero degli eventi', error });
+        console.error('Error fetching events:', error);
+        res.status(500).json({ message: 'Error fetching events' });
     }
 });
 
-
-router.get('/markers',  async (req, res) => {
+router.get('/markers', async (req, res) => {
     try {
         const markers = await Event.find();
-        const now = new Date(); 
+        const now = new Date();
         const futureEvents = markers
             .filter(event => event && new Date(event.date) > now);
         if (!markers) {
@@ -171,7 +187,7 @@ router.get('/markers',  async (req, res) => {
 });
 
 router.get('/search', async (req, res) => {
-    const query = req.query.search || ''; 
+    const query = req.query.search || '';
     try {
         const now = new Date();
 
@@ -180,9 +196,9 @@ router.get('/search', async (req, res) => {
             date: { $gt: now }
         });
 
-        res.json(events); 
+        res.json(events);
     } catch (error) {
-        console.error(error); 
+        console.error(error);
         res.status(500).json({ error: 'Error retrieving events' });
     }
 });

@@ -78,6 +78,7 @@ router.post('/login', async (req, res) => {
 router.get('/verify', authMiddleware, async (req, res) => {
     try {
         const user = await User.findById(req.user.id);
+        console.log(req.user.id);
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }

@@ -3,53 +3,56 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
-const app = express();
-const PORT = process.env.PORT;
 const http = require('http');
 const socketIo = require('socket.io');
-// Crea l'app Express
+
+const app = express();
+const PORT = process.env.PORT || 5000;  // Fallback nel caso in cui la porta non sia definita
 const server = http.createServer(app);
 const io = socketIo(server, {
-    cors: { 
+    cors: {
+        origin: '*',
         methods: ["GET", "POST"]
     }
 });
 
 app.use(cors({
+    origin: '*',
     methods: ["GET", "POST"]
 }));
 
 app.use(express.json());
 
-
 // Connessione a MongoDB
-const mongoURI = process.env.MONGO_URI; 
-mongoose.connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-.then(() => console.log('MongoDB connected'))
-.catch(err => console.log('MongoDB connection error:', err));
+(async () => {
+    try {
+        await mongoose.connect(process.env.MONGO_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log('MongoDB connected');
+    } catch (err) {
+        console.error('MongoDB connection error:', err);
+    }
+})();
 
 // API Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/events', require('./routes/events'));
-app.use('', require('./routes/navigate'));
 app.use('/api/partecipate', require('./routes/partecipate'));
+// app.use('/', require('./routes/navigate'));
 
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../client/build')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Serve React frontend
+app.use(express.static(path.join(__dirname, 'frontend/build')));
+
+// Catch-all route per il client-side routing
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'frontend/build', 'index.html'));
 });
 
 io.on('connection', (socketClient) => {
-    io.on('connection', (socketClient) => {
-        console.log(`Un utente si è connesso: ${socketClient.id}`);
-    });
+    console.log(`Un utente si è connesso: ${socketClient.id}`);
 
     socketClient.on("sendComment", (comment) => {
         console.log("nuovo commento arrivato", comment._id);

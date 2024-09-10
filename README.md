@@ -23,45 +23,53 @@ Prima di poter avviare il progetto, bisogna assicurarsi di avere:
 1. Configurazione del Backend
 Crea un file .env nella cartella ./progetto/server/ con i seguenti parametri:
 
-`PORT=porta_di_ascolto_del_server (es. 5000)`
+`PORT=5000`
 
 `JWT_SECRET=tuo_segreto_per_jwt`
 
 `MONGODB_URI=indirizzo_della_tua_istanza_mongodb`
 
 2. Configurazione del Frontend
-Crea un file .env nella cartella ./progetto/client/ con i seguenti parametri:
+Crea un file .env nella cartella ./progetto/server/frontend con i seguenti parametri:
 
 `REACT_APP_GOOGLE_MAPS_API_KEY=la_tua_chiave_google_maps`
 
 `REACT_APP_MAP_ID=id_della_mappa_google`
 
+`REACT_APP_PORT=5000`
+
+`REACT_APP_SERVER_URL=il_tuo_url`
+
 3. Installazione delle Dipendenze
-Naviga nelle cartelle del client e del server e installa le dipendenze necessarie con i seguenti comandi:
+Installa le dipendenze necessarie con i seguenti comandi:
 
-`cd ./progetto/client`
-
-`npm install`
-
-Installazione delle Dipendenze del Server
-`cd ../server`
+`cd ./progetto/server`
 
 `npm install`
+
+`cd ./frontend`
+
+`npm client-install ` 
+
 
 ## Avvio del Progetto
 
 1. Avvio del Backend
-Dalla cartella ./progetto/server, avvia il server con il comando:
+Dalla cartella ./progetto/server, avvia il server con i comandi:
+
+`npm run build` (non necessario se 'npm client-install' è appena stato effettuato)
 
 `npm start`
 
 Il server partirà sulla porta specificata nel file .env.
 
-2. Avvio del Frontend
-Dalla cartella ./progetto/client, avvia l'app React con il comando:
+### Cambio di porta
 
-`npm start`
+Nel caso in cui si volesse cambiare la porta, vanno cambiati i file `.env` sia in /progetto/server sia in /progetto/server/frontend, rispettivamente le variabili:
 
-L'app sarà accessibile all'indirizzo http://localhost:3000.
+`PORT`
+
+`REACT_APP_PORT`
+
 
 
